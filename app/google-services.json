@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "467924176303",
+    "firebase_url": "https://distribroot.firebaseio.com",
+    "project_id": "distribroot",
+    "storage_bucket": "distribroot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467924176303:android:dd5f189b9d65a04f78b35a",
+        "android_client_info": {
+          "package_name": "com.lefriedman.distribroot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467924176303-5gbitd3ve5ie469a6jdmgi2um8kt79en.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lefriedman.distribroot",
+            "certificate_hash": "b7908b6f3f90896fb5ce5662c8977f4e5c7f30f3"
+          }
+        },
+        {
+          "client_id": "467924176303-h7qi8m2uml1ts7mesr7kq4nbl42saol7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwZI9XN0OOMZHyNWGTpQYrwvk4Vd5ae4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467924176303-h7qi8m2uml1ts7mesr7kq4nbl42saol7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
