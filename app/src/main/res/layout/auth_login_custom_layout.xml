@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/login_backsplash_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:foreground="@drawable/login_overlay"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/login_backsplash"
+        tools:srcCompat="@drawable/login_backsplash" />
+
+    <ImageView
+        android:id="@+id/login_logo_iv"
+        android:layout_width="309dp"
+        android:layout_height="171dp"
+        android:layout_marginTop="164dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/distribroot_logo" />
+
+
+    <LinearLayout
+        android:id="@+id/login_layout_include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_logo_iv"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:weightSum="100">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/grey_200"
+            android:layout_weight="25"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/login_quick_connect_label"
+            android:textAllCaps="true"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="50"
+            android:gravity="center_horizontal"
+            android:textColor="@color/grey_200"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/grey_200"
+            android:layout_weight="25"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/login_google_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/login_rounded_button_google"
+        android:textColor="@color/white"
+        android:text="@string/login_google_btn_text"
+        android:drawableStart="@drawable/signin_google_logo"
+        android:paddingStart="24dp"
+        android:drawablePadding="24dp"
+        android:gravity="center_vertical|left"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_layout_include"/>
+
+    <Button
+        android:id="@+id/login_phone_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/white"
+        android:background="@drawable/login_rounded_button"
+        android:text="@string/login_phone_btn_text"
+        android:drawableStart="@drawable/ic_local_phone_white_24dp"
+        android:paddingStart="24dp"
+        android:drawablePadding="24dp"
+        android:gravity="center_vertical|left"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_google_btn"/>
+
+    <LinearLayout
+        android:id="@+id/login_layout_include2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_phone_btn"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:weightSum="100">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/grey_200"
+            android:layout_weight="25"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/login_create_account_label"
+            android:textAllCaps="true"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_weight="50"
+            android:gravity="center_horizontal"
+            android:textColor="@color/grey_200"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/grey_200"
+            android:layout_weight="25"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/login_email_btn"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/login_email_btn_text"
+        android:textAllCaps="false"
+        android:textColor="@color/grey_200"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_layout_include2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

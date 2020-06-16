@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity">
+
+        <Button
+            android:id="@+id/sign_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/user_form_btn_sign_out"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/user_first_name_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:autofillHints="@string/user_form_first_name_hint"
+            android:ems="10"
+            android:hint="@string/user_form_first_name_hint"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/user_last_name_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:autofillHints="@string/user_form_last_name_hint"
+            android:ems="10"
+            android:hint="@string/user_form_last_name_hint"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="@+id/user_first_name_editText"
+            app:layout_constraintTop_toBottomOf="@+id/user_first_name_editText" />
+
+        <EditText
+            android:id="@+id/user_email_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:autofillHints="@string/user_form_email_hint"
+            android:ems="10"
+            android:hint="@string/user_form_email_hint"
+            android:inputType="textEmailAddress"
+            app:layout_constraintStart_toStartOf="@+id/user_last_name_editText"
+            app:layout_constraintTop_toBottomOf="@+id/user_last_name_editText" />
+
+        <EditText
+            android:id="@+id/user_phone_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:autofillHints="@string/user_form_phone_hint"
+            android:ems="10"
+            android:hint="@string/user_form_phone_hint"
+            android:inputType="phone"
+            app:layout_constraintStart_toStartOf="@+id/user_email_editText"
+            app:layout_constraintTop_toBottomOf="@+id/user_email_editText" />
+
+        <EditText
+            android:id="@+id/user_address_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:autofillHints="@string/user_form_address_hint"
+            android:ems="10"
+            android:hint="@string/user_form_address_hint"
+            android:inputType="textPostalAddress"
+            app:layout_constraintStart_toStartOf="@+id/user_phone_editText"
+            app:layout_constraintTop_toBottomOf="@+id/user_phone_editText" />
+
+        <EditText
+            android:id="@+id/user_child_int_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/user_form_num_children_hint"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="@+id/user_address_editText"
+            app:layout_constraintTop_toBottomOf="@+id/user_address_editText"
+            android:importantForAutofill="no" />
+
+        <Button
+            android:id="@+id/user_submit_form_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Submit"
+            app:layout_constraintBottom_toTopOf="@+id/sign_out"
+            app:layout_constraintStart_toStartOf="@+id/sign_out" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

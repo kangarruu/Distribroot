@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">Distribroot</string>
+
+    //FirebaseAuthUI sign in
+    <string name="login_quick_connect_label">quickly connect with</string>
+    <string name="login_create_account_label">or login with your email</string>
+    <string name="login_google_btn_text">Continue with Google</string>
+    <string name="login_email_btn_text">Continue with e-mail</string>
+    <string name="login_phone_btn_text">Continue with phone</string>
+
+    //User info form
+    <string name="user_form_btn_sign_out">Sign out</string>
+    <string name="user_form_btn_submit">Submit</string>
+    <string name="user_form_first_name_hint">First Name</string>
+    <string name="user_form_last_name_hint">Last Name</string>
+    <string name="user_form_email_hint">E-mail</string>
+    <string name="user_form_phone_hint">Phone Number</string>
+    <string name="user_form_address_hint">Address</string>
+    <string name="user_form_num_children_hint">Number of children</string>
+
+    //Welcome screen
+    <string name="welcome_tv">Welcome to Distribroot</string>
+    <string name="welcome_description_tv">Locate a distributor near you and subscribe to real time updates. Or start a new distribution center.</string>
+    <string name="welcome_user_btn_txt">Find Local Distribution</string>
+    <string name="welcome_distributor_btn_txt">Create New Distribution</string>
+    <string name="main_google_play_not_enabled_error_toast">Unable to locate distribution. Please update Google Play Services to continue</string>
+    <string name="main_location_request_dialog_msg">\"This application requires your location in order to work properly, do you want to enable location permissions? \"</string>
+    <string name="main_location_request_disabled_toast_msg">Permission request has been disabled. Enable location permission in app settings to continue.</string>
+    <string name="main_location_request_dialog_yes_btn_txt">Yes</string>
+    <string name="main_location_request_dialog_cancel_btn_txt">Cancel</string>
+    <string name="main_gps_request_dialog_msg">\"This application requires GPS in order to work properly, do you want to enable it? \"</string>
+
+
 </resources>

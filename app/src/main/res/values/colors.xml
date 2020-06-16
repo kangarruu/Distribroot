@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
-</resources>
+    <color name="colorPrimary">@color/blue_grey_300</color>
+    <color name="colorPrimaryDark">@color/grey_700</color>
+    <color name="colorAccent">@color/green_a700</color>
+    <color name="google_btn_color">@color/light_blue_500</color>
+    <color name="phone_btn_color">@color/blue_grey_300</color>
+
+
+
+    <color name="green_a700">#0AB445</color>
+    <color name="grey_700">#5E615E</color>
+    <color name="green_900">#1B4C29</color>
+    <color name="grey_300">#E1E1E1</color>
+    <color name="marshland">#0D0F09</color>
+    <color name="blue_grey_300">#9DA3A1</color>
+    <color name="green_200">#B0CBBD</color>
+    <color name="teal_100">#A7D4C1</color>
+    <color name="cyan_50">#DAFCF6</color>
+    <color name="green_a200">#67D398</color>
+    <color name="salem">#0A943B</color>
+    <color name="opal">#A7CBC5</color>
+    <color name="teal_300">#5FBD94</color>
+    <color name="brown_200">#A9A89F</color>
+    <color name="grey_900">#14140F</color>
+    <color name="green_50">#E8F5E9</color>
+    <color name="grey_200">#E7E7E7</color>
+    <color name="white">#ffffff</color>
+    <color name="light_blue_500">#0099FF</color>
+
+  </resources>
