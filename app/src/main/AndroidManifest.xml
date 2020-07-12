@@ -12,11 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.FindDistributionActivity"></activity>
+        <activity android:name=".ui.DistributorProfileActivity"></activity>
+        <activity android:name=".ui.FindDistributionActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAEax3wlRSW_85xpHSgtfuqakTGZm8UaXg" />
+            android:value="" />
 
         <activity
             android:name=".ui.MainActivity"

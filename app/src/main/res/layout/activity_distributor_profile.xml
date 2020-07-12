@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity">
+
+        <EditText
+            android:id="@+id/distributor_name_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:autofillHints="@string/distributor_form_name_hint"
+            android:ems="10"
+            android:hint="@string/distributor_form_name_hint"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/distributor_phone_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:autofillHints="@string/distributor_form_phone_hint"
+            android:ems="10"
+            android:hint="@string/distributor_form_phone_hint"
+            android:inputType="phone"
+            app:layout_constraintStart_toStartOf="@+id/distributor_name_editText"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_name_editText" />
+
+        <EditText
+            android:id="@+id/distributor_address_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:autofillHints="@string/distributor_form_address_hint"
+            android:ems="10"
+            android:hint="@string/distributor_form_address_hint"
+            android:inputType="textPostalAddress"
+            app:layout_constraintStart_toStartOf="@+id/distributor_phone_editText"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_phone_editText" />
+
+        <EditText
+            android:id="@+id/distributor_city_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:autofillHints="@string/distributor_form_city_hint"
+            android:ems="10"
+            android:hint="@string/distributor_form_city_hint"
+            android:inputType="textPostalAddress"
+            app:layout_constraintStart_toStartOf="@+id/distributor_address_editText"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_address_editText" />
+
+        <EditText
+            android:id="@+id/distributor_state_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:autofillHints="@string/distributor_form_state_hint"
+            android:ems="10"
+            android:hint="@string/distributor_form_state_hint"
+            android:inputType="textPostalAddress"
+            app:layout_constraintStart_toStartOf="@+id/distributor_city_editText"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_city_editText" />
+
+        <EditText
+            android:id="@+id/distributor_zip_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:autofillHints="@string/distributor_form_zip_hint"
+            android:ems="10"
+            android:hint="@string/distributor_form_zip_hint"
+            android:inputType="textPostalAddress"
+            app:layout_constraintStart_toStartOf="@+id/distributor_state_editText"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_state_editText" />
+
+
+        <Button
+            android:id="@+id/user_submit_form_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Submit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

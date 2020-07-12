@@ -10,6 +10,8 @@ public class Constants {
     public static final int ERROR_DIALOG_REQUEST = 102;
     //FindDistributionActivity locationSettingsRequest
     public static final int CHECK_SETTINGS_REQUEST = 103;
+    //Geolocation API Base URL
+    public static final String BASE_URL = "https://maps.googleapis.com/";
 
 
 

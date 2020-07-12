@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Distribroot</string>
 
+
+
     //FirebaseAuthUI sign in
     <string name="login_quick_connect_label">quickly connect with</string>
     <string name="login_create_account_label">or login with your email</string>
@@ -18,6 +20,17 @@
     <string name="user_form_address_hint">Address</string>
     <string name="user_form_num_children_hint">Number of children</string>
 
+    //distributor info form
+    <string name="distributor_form_btn_sign_out">Sign out</string>
+    <string name="distributor_form_btn_submit">Submit</string>
+    <string name="distributor_form_name_hint">Name</string>
+    <string name="distributor_form_email_hint">E-mail</string>
+    <string name="distributor_form_phone_hint">Phone Number</string>
+    <string name="distributor_form_address_hint">Street Address</string>
+    <string name="distributor_form_city_hint">City</string>
+    <string name="distributor_form_state_hint">State</string>
+    <string name="distributor_form_zip_hint">Zip</string>
+
     //Welcome screen
     <string name="welcome_tv">Welcome to Distribroot</string>
     <string name="welcome_description_tv">Locate a distributor near you and subscribe to real time updates. Or start a new distribution center.</string>
@@ -30,5 +43,7 @@
     <string name="main_location_request_dialog_cancel_btn_txt">Cancel</string>
     <string name="main_gps_request_dialog_msg">\"This application requires GPS in order to work properly, do you want to enable it? \"</string>
 
+    //Find distribution screen
+    <string name="distribution_map_marker_text">Your Location</string>
 
 </resources>

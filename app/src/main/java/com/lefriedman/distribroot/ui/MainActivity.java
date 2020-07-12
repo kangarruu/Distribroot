@@ -57,6 +57,8 @@ public class MainActivity extends BaseActivity {
 
         //Set the button click listeners
         attachFindDistributionClickListener();
+        attachStartDistributionClickListener();
+        attachSignOutClickListener();
 
         //Create preference boolean to check if location dialog was previously shown
         sharedPref = getApplicationContext().getSharedPreferences("SharedPref", MODE_PRIVATE);
@@ -65,13 +67,28 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    private void attachStartDistributionClickListener() {
+        mDataBinder.welcomeDistributorBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (areGooglePlayServicesEnabled() && isLocationPermissionGranted){
+                    Log.d(TAG, "attachStartDistributionClickListener: launching new activity ");
+                    Intent intent = new Intent(MainActivity.this, DistributorProfileActivity.class);
+                    startActivity(intent);
+                } else {
+                    requestLocationPermissions();
+                }
+
+            }
+        });
+    }
+
     //If all location permissions are granted, launch activity to find local distribution using User's location
     private void attachFindDistributionClickListener(){
         mDataBinder.welcomeUserBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (areGooglePlayServicesEnabled() && isLocationPermissionGranted){
-                    //TODO: switch intent to picking User location activity
                     Log.d(TAG, "attachFindDistributionClickListener: launching new activity ");
                     Intent intent = new Intent(MainActivity.this, FindDistributionActivity.class);
                     startActivity(intent);
@@ -82,6 +99,16 @@ public class MainActivity extends BaseActivity {
             });
         }
 
+    private void attachSignOutClickListener(){
+        mDataBinder.signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AuthUI.getInstance() != null) {
+                    AuthUI.getInstance().signOut(MainActivity.this);
+                }
+            }
+        });
+    }
 
     private void requestLocationPermissions() {
         //Request location permissions to get User's location.
