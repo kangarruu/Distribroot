@@ -45,5 +45,6 @@
 
     //Find distribution screen
     <string name="distribution_map_marker_text">Your Location</string>
+    <string name="find_map_content_description">Map with local distributions</string>
 
 </resources>

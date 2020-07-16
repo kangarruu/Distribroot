@@ -1,22 +1,25 @@
 package com.lefriedman.distribroot.repositories;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.lefriedman.distribroot.livedata.FirebaseLiveData;
-import com.lefriedman.distribroot.requests.DistribrootApiClient;
+import com.lefriedman.distribroot.models.retrofit.ResultWrapper;
+import com.lefriedman.distribroot.requests.FirebaseClient;
+
+
+
 
 public class DistributionRepository {
     private static final String TAG = DistributionRepository.class.getSimpleName();
 
     private static DistributionRepository sInstance;
-    private DistribrootApiClient distribrootApiClient;
-
+    private FirebaseClient firebaseClient;
+//    private MutableLiveData<ResultWrapper> geoWrapperLiveData;
 
     public DistributionRepository() {
-        distribrootApiClient = new DistribrootApiClient().getInstance();
+        firebaseClient = new FirebaseClient().getInstance();
+//        geoWrapperLiveData = new MutableLiveData<>();
     }
 
     //Return a singleton repository object
@@ -26,11 +29,16 @@ public class DistributionRepository {
         } return sInstance;
     }
 
+    //the repository has methods that get data either from network or from local storage (the logic will be in the viewmodel )
+    // Also it has methods for adding /editing objects or data .
+
     public LiveData<DataSnapshot> getDataSnapshotLiveData() {
-        return distribrootApiClient.getDataSnapshotLiveData();
+        return firebaseClient.getDataSnapshotLiveData();
     }
 
-
+    public LiveData<String> makeRetrofitGeocodeApiCall(String name, String phone, String address, String city, String state, String zip, String apiKey){
+        return firebaseClient.makeRetrofitGeocodeApiCall(name, phone, address, city, state, zip, apiKey);
+    }
 
 
 

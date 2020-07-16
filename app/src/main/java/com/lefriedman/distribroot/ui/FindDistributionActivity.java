@@ -1,13 +1,5 @@
 package com.lefriedman.distribroot.ui;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,9 +9,15 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
@@ -36,31 +34,28 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lefriedman.distribroot.R;
 import com.lefriedman.distribroot.models.Distributor;
 import com.lefriedman.distribroot.viewmodels.FindDistributionViewModel;
 
-import java.util.ArrayList;
-
 import static com.lefriedman.distribroot.util.Constants.CHECK_SETTINGS_REQUEST;
 
-public class FindDistributionActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class FindDistributionActivity extends AppCompatActivity implements OnMapReadyCallback, OnInfoWindowClickListener {
 
     private static final String TAG = FindDistributionActivity.class.getSimpleName();
 
@@ -73,7 +68,9 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
     private FirebaseDatabase mFirebaseDb;
     private GeoFire mGeoFire;
     private LatLng mDistributorLatLng;
-    private ArrayList<Distributor> mDistributorList = new ArrayList<>();
+    private Marker mClickedMarker;
+    private Boolean isCameraViewSet = false;
+    private FindDistributionViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +87,18 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
         //Firebase database setup
         mFirebaseDb = FirebaseDatabase.getInstance();
         mGeoFire = new GeoFire(mFirebaseDb.getReference().child("distributor_location"));
+
+        mViewModel = new ViewModelProvider(this).get(FindDistributionViewModel.class);
+        mViewModel.getDataSnapshotLiveData().observe(this, new Observer<DataSnapshot>() {
+            @Override
+            public void onChanged(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+
+
+                }
+            }
+        });
+
 
     }
 
@@ -172,13 +181,16 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
                 if (task.isSuccessful()) {
                     mUserLocation = task.getResult();
                     Log.d(TAG, "onComplete: mUserLocation == " + mUserLocation);
-                    setMapCameraView();
-                    mMap.setMyLocationEnabled(true);
+                    if (!isCameraViewSet) {
+                        setMapCameraView();
+                        mMap.setMyLocationEnabled(true);
+                    }
+
                     if (mUserLocation == null) {
                         //If location returns null, create a location request
                         requestNewLocationData();
                     } else {
-                        //TODO Use this location to display the user on a map and locate distributions close by
+                        //Send this info to ViewModel to make a GeoFire call
                         Log.d(TAG, "getLastLocation:" + "" + mUserLocation.getLatitude() + " " + mUserLocation.getLongitude());
                         //Create new geoQuery using the User's location
                         GeoQuery geoQuery = mGeoFire.queryAtLocation(new GeoLocation(mUserLocation.getLatitude(), mUserLocation.getLongitude()),10);
@@ -189,21 +201,19 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
                                 mFirebaseDb.getReference().child("distributors").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        //Retrieve the distributor at the given key that satisfies the GeoQuery and add it to a list
+                                        //Retrieve the distributor at the given key that satisfies the GeoQuery and add its marker to the map
                                         Distributor distributor = dataSnapshot.getValue(Distributor.class);
-                                        mDistributorList.add(distributor);
-                                        Log.d(TAG, "onDataChange: distributorList: " + mDistributorList);
 
                                         if (location != null) {
                                             mDistributorLatLng = new LatLng(location.latitude, location.longitude);
                                             Log.d(TAG, "onKeyEntered: mDistributorLatlang = " + mDistributorLatLng);
                                         }
 
-                                        mMap.addMarker(new MarkerOptions()
+                                        mClickedMarker = mMap.addMarker(new MarkerOptions()
                                                 .position(mDistributorLatLng)
                                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                                                .title(distributor.getName()));
-
+                                                .title(distributor.getName())
+                                                .snippet(distributor.getAddress()));
                                     }
 
                                     @Override
@@ -212,29 +222,19 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
                                     }
                                 });
 
-
-
                             }
 
                             @Override
-                            public void onKeyExited(String key) {
-
-                            }
+                            public void onKeyExited(String key) { }
 
                             @Override
-                            public void onKeyMoved(String key, GeoLocation location) {
-
-                            }
+                            public void onKeyMoved(String key, GeoLocation location) { }
 
                             @Override
-                            public void onGeoQueryReady() {
-
-                            }
+                            public void onGeoQueryReady() { }
 
                             @Override
-                            public void onGeoQueryError(DatabaseError error) {
-
-                            }
+                            public void onGeoQueryError(DatabaseError error) { }
                         });
                     }
                 }
@@ -258,7 +258,11 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
                 return;
             }
             mUserLocation = locationResult.getLastLocation();
-            setMapCameraView();
+
+            if(!isCameraViewSet) {
+                setMapCameraView();
+            }
+
         }
     };
 
@@ -290,7 +294,8 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
                     .position(latLng)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                     .title(getString(R.string.distribution_map_marker_text)));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+            isCameraViewSet = true;
         } else {
             Log.d(TAG, "setMapCameraView: userLocation == null");
         }
@@ -301,6 +306,15 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnInfoWindowClickListener(this);
+        mMap.setContentDescription(getString(R.string.find_map_content_description));
+    }
+
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Toast.makeText(FindDistributionActivity.this, "Testing infoWindow " + marker.getTitle(), Toast.LENGTH_LONG).show();
+
     }
 
 

@@ -3,13 +3,14 @@ package com.lefriedman.distribroot.ui;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,17 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.lefriedman.distribroot.R;
 import com.lefriedman.distribroot.databinding.ActivityDistributorProfileBinding;
-import com.lefriedman.distribroot.models.Distributor;
-import com.lefriedman.distribroot.models.retrofit.Result;
-import com.lefriedman.distribroot.models.retrofit.ResultWrapper;
-import com.lefriedman.distribroot.requests.GeolocationApi;
-import com.lefriedman.distribroot.requests.RetrofitServiceGenerator;
+import com.lefriedman.distribroot.viewmodels.DistributorProfileViewModel;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DistributorProfileActivity extends BaseActivity {
 
@@ -37,8 +29,7 @@ public class DistributorProfileActivity extends BaseActivity {
     private FirebaseDatabase mFirebaseDb;
     private DatabaseReference mDistributorDbReference;
     private ChildEventListener mChildEventListener;
-    private GeoFire mGeoFire;
-    private String mPushId;
+    private DistributorProfileViewModel mViewmodel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +39,15 @@ public class DistributorProfileActivity extends BaseActivity {
         //Databinding
         mDataBinder = DataBindingUtil.setContentView(this, R.layout.activity_distributor_profile);
 
+        //Set up ViewModel
+        mViewmodel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
+                .getInstance(this.getApplication())).get(DistributorProfileViewModel.class);
+
         attachSubmitClickListener();
 
         //Firebase database setup
         mFirebaseDb = FirebaseDatabase.getInstance();
         mDistributorDbReference = mFirebaseDb.getReference().child("distributors");
-        mGeoFire = new GeoFire(mFirebaseDb.getReference().child("distributor_location"));
     }
 
 
@@ -75,68 +69,19 @@ public class DistributorProfileActivity extends BaseActivity {
         String state = mDataBinder.distributorStateEditText.getText().toString();
         String zip = mDataBinder.distributorZipEditText.getText().toString();
 
-        //Generate the latitude and longitude coordinates using the Geocoding API
+        //Save address to Firebase and generate the latitude and longitude coordinates using the Geolocation API
         try {
-            makeRetrofitGeocodeApiCall(name, phone, address, city, state, zip);
+            mViewmodel.makeRetrofitGeocodeApiCall(name, phone, address, city, state, zip).observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(String toastMessage) {
+                    Toast.makeText(DistributorProfileActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    private void makeRetrofitGeocodeApiCall(String name, String phone, String address, String city, String state, String zip) {
-
-        String concatAddress = address + " " + city + " " + state + " " + zip;
-        Log.d(TAG, "makeRetrofitGeocodeApiCall: making retrofit call. Address = " + concatAddress);
-
-        //Get an instance of the Geolocation Api
-        GeolocationApi geolocationApi = RetrofitServiceGenerator.getGeolocationApi();
-        Call<ResultWrapper> geoResult = geolocationApi.getGeocode(concatAddress, getString(R.string.maps_api_key));
-
-        geoResult.enqueue(new Callback<ResultWrapper>() {
-            @Override
-            public void onResponse(Call<ResultWrapper> call, Response<ResultWrapper> response) {
-                if (response.isSuccessful()){
-                    Log.d(TAG, "GeoResult onResponse: georesult: " + response.body().toString());
-                    List<Result> resultList = response.body().getResults();
-                    String placeId = resultList.get(0).getPlaceId();
-                    Double lat = resultList.get(0).getGeometry().getLocation().getLat();
-                    Double lng =  resultList.get(0).getGeometry().getLocation().getLng();
-
-                    //Create new distributor object to add to the DB
-                    Distributor distributor = new Distributor(name, phone, address, city, state, zip, placeId);
-                    //Generate a pushId in Firebase Database for use in GeoFire
-                    mPushId = mDistributorDbReference.push().getKey();
-                    //Set the distributor & GeoFire data using the new key
-                    mDistributorDbReference.child(mPushId).setValue(distributor);
-                    mGeoFire.setLocation(mPushId, new GeoLocation(lat, lng), new GeoFire.CompletionListener() {
-                        @Override
-                        public void onComplete(String key, DatabaseError error) {
-                            if (error !=null){
-                                Log.d(TAG, "GeoFire onComplete: There was an error adding distributor geoCoordinates to GeoFire ");
-                            }else {
-                                Log.d(TAG, "GeoFire onComplete: new distributor geoCoordinates saved to GeoFire successfully");
-                            }
-                        }
-                    });
-
-
-                } else {
-                    try {
-                        Log.d(TAG, "makeRetrofitGeocodeApiCall() onResponse: GeoResult error = " + response.errorBody().toString());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResultWrapper> call, Throwable t) {
-                Log.d(TAG, "makeRetrofitGeocodeApiCall() onFailure: Retrofit call failed: " + t);
-            }
-        });
-
-    }
 
     private void attachDbReadListener(){
         if (mChildEventListener == null) {

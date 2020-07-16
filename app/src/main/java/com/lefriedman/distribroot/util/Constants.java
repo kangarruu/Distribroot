@@ -1,5 +1,9 @@
 package com.lefriedman.distribroot.util;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.lefriedman.distribroot.R;
+
 public class Constants {
 
     //FirebaseAuth flag
@@ -12,6 +16,11 @@ public class Constants {
     public static final int CHECK_SETTINGS_REQUEST = 103;
     //Geolocation API Base URL
     public static final String BASE_URL = "https://maps.googleapis.com/";
+    //Geofire reference
+    public static final DatabaseReference DISTRIBUTOR_LOCATION_REF = FirebaseDatabase.getInstance()
+            .getReference().child("distributor_location");
+    public static final DatabaseReference DISTRIBUTORS_REF = FirebaseDatabase.getInstance()
+            .getReference().child("distributors");
 
 
 

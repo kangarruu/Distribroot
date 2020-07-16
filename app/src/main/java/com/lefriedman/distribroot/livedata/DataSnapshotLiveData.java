@@ -11,17 +11,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class FirebaseLiveData extends LiveData<DataSnapshot> {
-    private static final String TAG = FirebaseLiveData.class.getSimpleName();
+public class DataSnapshotLiveData extends LiveData<DataSnapshot> {
+    private static final String TAG = DataSnapshotLiveData.class.getSimpleName();
 
     private final Query mQuery;
     private final FirebaseValueEventListener eventListener = new FirebaseValueEventListener();
 
-    public FirebaseLiveData(Query query) {
+    public DataSnapshotLiveData(Query query) {
         mQuery = query;
     }
 
-    public FirebaseLiveData(DatabaseReference ref) {
+    public DataSnapshotLiveData(DatabaseReference ref) {
         mQuery = ref;
     }
 

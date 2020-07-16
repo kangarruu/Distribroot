@@ -55,6 +55,8 @@ public class MainActivity extends BaseActivity {
         //Initialize Firebase authentication
         InitFirebaseAuth();
 
+        requestLocationPermissions();
+
         //Set the button click listeners
         attachFindDistributionClickListener();
         attachStartDistributionClickListener();
