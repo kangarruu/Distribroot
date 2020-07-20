@@ -60,12 +60,12 @@ public class FindDistributionViewModel extends ViewModel {
                 Log.d(TAG, "Adding geoquery event listener onKeyEntered: key: " + key );
                 dataSnapshotLiveData = mRepository.getDataSnapshotLiveData(key);
                 Log.d(TAG, "onKeyEntered: dataSnapshotLiveData: " + dataSnapshotLiveData.getValue());
-                mDistributorLiveData = Transformations.map(dataSnapshotLiveData, new Deserializer());
-
-                if (location != null) {
-                    mDistributorLatLng = new MutableLiveData<>(new LatLng(location.latitude, location.longitude));
-                    Log.d(TAG, "onKeyEntered: mDistributorLatlang = " + mDistributorLatLng);
-                }
+//                mDistributorLiveData = Transformations.map(dataSnapshotLiveData, new Deserializer());
+//
+//                if (location != null) {
+//                    mDistributorLatLng = new MutableLiveData<>(new LatLng(location.latitude, location.longitude));
+//                    Log.d(TAG, "onKeyEntered: mDistributorLatlang = " + mDistributorLatLng);
+//                }
 
             }
 
