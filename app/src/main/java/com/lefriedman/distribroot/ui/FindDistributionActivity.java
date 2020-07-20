@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -50,6 +51,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lefriedman.distribroot.R;
+import com.lefriedman.distribroot.livedata.DataSnapshotLiveData;
 import com.lefriedman.distribroot.models.Distributor;
 import com.lefriedman.distribroot.viewmodels.FindDistributionViewModel;
 
@@ -89,17 +91,6 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
         mGeoFire = new GeoFire(mFirebaseDb.getReference().child("distributor_location"));
 
         mViewModel = new ViewModelProvider(this).get(FindDistributionViewModel.class);
-        mViewModel.getDataSnapshotLiveData().observe(this, new Observer<DataSnapshot>() {
-            @Override
-            public void onChanged(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-
-
-                }
-            }
-        });
-
-
     }
 
     //Create a settings builder to determine User's Location settings
@@ -170,7 +161,7 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
     }
 
     private void getLastLocation() {
-        if(ActivityCompat.checkSelfPermission(
+        if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -190,56 +181,67 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
                         //If location returns null, create a location request
                         requestNewLocationData();
                     } else {
-                        //Send this info to ViewModel to make a GeoFire call
                         Log.d(TAG, "getLastLocation:" + "" + mUserLocation.getLatitude() + " " + mUserLocation.getLongitude());
+                        //Send this info to ViewModel to make a GeoFire call
+                        LiveData<DataSnapshot> dataSnapshotLiveData = mViewModel.makeGeoQuery(mUserLocation);
+                        Log.d(TAG, "onComplete: datasnapshotliveData: " + dataSnapshotLiveData);
+//                        localDistributor.observe(FindDistributionActivity.this, new Observer<DataSnapshot>() {
+//                            @Override
+//                            public void onChanged(DataSnapshot dataSnapshot) {
+//                                Log.d(TAG, "onChanged: new datasnapshot: " + dataSnapshot);
+//                            }
+//                        });
+
+
                         //Create new geoQuery using the User's location
-                        GeoQuery geoQuery = mGeoFire.queryAtLocation(new GeoLocation(mUserLocation.getLatitude(), mUserLocation.getLongitude()),10);
-                        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-                            @Override
-                            public void onKeyEntered(String key, final GeoLocation location) {
-
-                                mFirebaseDb.getReference().child("distributors").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        //Retrieve the distributor at the given key that satisfies the GeoQuery and add its marker to the map
-                                        Distributor distributor = dataSnapshot.getValue(Distributor.class);
-
-                                        if (location != null) {
-                                            mDistributorLatLng = new LatLng(location.latitude, location.longitude);
-                                            Log.d(TAG, "onKeyEntered: mDistributorLatlang = " + mDistributorLatLng);
-                                        }
-
-                                        mClickedMarker = mMap.addMarker(new MarkerOptions()
-                                                .position(mDistributorLatLng)
-                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                                                .title(distributor.getName())
-                                                .snippet(distributor.getAddress()));
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-
-                            }
-
-                            @Override
-                            public void onKeyExited(String key) { }
-
-                            @Override
-                            public void onKeyMoved(String key, GeoLocation location) { }
-
-                            @Override
-                            public void onGeoQueryReady() { }
-
-                            @Override
-                            public void onGeoQueryError(DatabaseError error) { }
-                        });
+//                        GeoQuery geoQuery = mGeoFire.queryAtLocation(new GeoLocation(mUserLocation.getLatitude(), mUserLocation.getLongitude()),10);
+//                        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+//                            @Override
+//                            public void onKeyEntered(String key, final GeoLocation location) {
+//
+//                                mFirebaseDb.getReference().child("distributors").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+//                                    @Override
+//                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                        //Retrieve the distributor at the given key that satisfies the GeoQuery and add its marker to the map
+//                                        Distributor distributor = dataSnapshot.getValue(Distributor.class);
+//
+//                                        if (location != null) {
+//                                            mDistributorLatLng = new LatLng(location.latitude, location.longitude);
+//                                            Log.d(TAG, "onKeyEntered: mDistributorLatlang = " + mDistributorLatLng);
+//                                        }
+//
+//                                        mClickedMarker = mMap.addMarker(new MarkerOptions()
+//                                                .position(mDistributorLatLng)
+//                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+//                                                .title(distributor.getName())
+//                                                .snippet(distributor.getAddress()));
+//                                    }
+//
+//                                    @Override
+//                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                    }
+//                                });
+//
+//                            }
+//
+//                            @Override
+//                            public void onKeyExited(String key) { }
+//
+//                            @Override
+//                            public void onKeyMoved(String key, GeoLocation location) { }
+//
+//                            @Override
+//                            public void onGeoQueryReady() { }
+//
+//                            @Override
+//                            public void onGeoQueryError(DatabaseError error) { }
+//                        });
                     }
                 }
-            }
-        });
+                    }
+
+            });
     }
 
     @SuppressLint("MissingPermission")

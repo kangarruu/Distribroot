@@ -49,4 +49,6 @@ public class DataSnapshotLiveData extends LiveData<DataSnapshot> {
             Log.e(TAG, "FirebaseValueEventListener onCancelled: " + mQuery, error.toException());
         }
     }
+
+
 }

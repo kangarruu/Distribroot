@@ -1,9 +1,12 @@
 package com.lefriedman.distribroot.repositories;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.database.DataSnapshot;
+import com.lefriedman.distribroot.livedata.DataSnapshotLiveData;
 import com.lefriedman.distribroot.models.retrofit.ResultWrapper;
 import com.lefriedman.distribroot.requests.FirebaseClient;
 
@@ -32,8 +35,9 @@ public class DistributionRepository {
     //the repository has methods that get data either from network or from local storage (the logic will be in the viewmodel )
     // Also it has methods for adding /editing objects or data .
 
-    public LiveData<DataSnapshot> getDataSnapshotLiveData() {
-        return firebaseClient.getDataSnapshotLiveData();
+    public LiveData<DataSnapshot> getDataSnapshotLiveData(String key) {
+        Log.d(TAG, "DistributionRepository getDataSnapshotLiveData: getting liveData<Snapshot> at key: " + key);
+        return firebaseClient.getDataSnapshotLiveData(key);
     }
 
     public LiveData<String> makeRetrofitGeocodeApiCall(String name, String phone, String address, String city, String state, String zip, String apiKey){

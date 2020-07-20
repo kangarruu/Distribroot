@@ -9,6 +9,8 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lefriedman.distribroot.livedata.DataSnapshotLiveData;
 import com.lefriedman.distribroot.models.Distributor;
 import com.lefriedman.distribroot.models.retrofit.Result;
@@ -29,12 +31,11 @@ public class FirebaseClient {
 
     private static FirebaseClient sInstance;
     private GeolocationApi mGeoApi;
-    private DataSnapshotLiveData mDataSnapshotLiveData;
     private MutableLiveData<String> toastResponseObserverLiveData = new MutableLiveData<>();
     private GeoFire mGeoFire;
+    private DataSnapshotLiveData mDatasnapshotLiveData;
 
     public FirebaseClient() {
-        mDataSnapshotLiveData = new DataSnapshotLiveData(DISTRIBUTORS_REF);
         mGeoApi = new RetrofitServiceGenerator().getGeolocationApi();
         mGeoFire = new GeoFire(DISTRIBUTOR_LOCATION_REF);
     }
@@ -46,8 +47,11 @@ public class FirebaseClient {
         } return sInstance;
     }
 
-    public LiveData<DataSnapshot> getDataSnapshotLiveData() {
-        return mDataSnapshotLiveData;
+    public LiveData<DataSnapshot> getDataSnapshotLiveData(String key) {
+        mDatasnapshotLiveData = new DataSnapshotLiveData(DISTRIBUTORS_REF.child(key));
+        Log.d(TAG, "FirebaseClient getDataSnapshotLiveData: returning dataSnapshot LiveData at key: " + key + " datasnapshot: " + mDatasnapshotLiveData.getValue());
+
+        return mDatasnapshotLiveData;
     }
 
     //Make the Geolocation retrofit call and store result in GeoFire
@@ -111,6 +115,7 @@ public class FirebaseClient {
         });
         return toastResponseObserverLiveData;
     }
+
 
 
 }
