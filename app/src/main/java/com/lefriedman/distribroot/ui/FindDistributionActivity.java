@@ -53,6 +53,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.lefriedman.distribroot.R;
 import com.lefriedman.distribroot.livedata.DataSnapshotLiveData;
 import com.lefriedman.distribroot.models.Distributor;
+import com.lefriedman.distribroot.requests.FirebaseClient;
 import com.lefriedman.distribroot.viewmodels.FindDistributionViewModel;
 
 import static com.lefriedman.distribroot.util.Constants.CHECK_SETTINGS_REQUEST;
@@ -70,6 +71,9 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
     private FirebaseDatabase mFirebaseDb;
     private GeoFire mGeoFire;
     private LatLng mDistributorLatLng;
+    private LiveData<LatLng> mLatLngLiveData;
+    private String mDistributorName;
+    private String mDistributorAddress;
     private Marker mClickedMarker;
     private Boolean isCameraViewSet = false;
     private FindDistributionViewModel mViewModel;
@@ -182,18 +186,43 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
                         requestNewLocationData();
                     } else {
                         Log.d(TAG, "getLastLocation:" + "" + mUserLocation.getLatitude() + " " + mUserLocation.getLongitude());
-                        //Send this info to ViewModel to make a GeoFire call
-                        LiveData<DataSnapshot> dataSnapshotLiveData = mViewModel.makeGeoQuery(mUserLocation);
-                        Log.d(TAG, "onComplete: datasnapshotliveData: " + dataSnapshotLiveData);
-//                        localDistributor.observe(FindDistributionActivity.this, new Observer<DataSnapshot>() {
-//                            @Override
-//                            public void onChanged(DataSnapshot dataSnapshot) {
-//                                Log.d(TAG, "onChanged: new datasnapshot: " + dataSnapshot);
-//                            }
-//                        });
+//                        Send this info to ViewModel to make a GeoFire call
+                        LiveData<Distributor> distributorLiveData = mViewModel.makeGeoQuery(mUserLocation);
+                        try {
+                            distributorLiveData.observe(FindDistributionActivity.this, new Observer<Distributor>() {
+                                @Override
+                                public void onChanged(Distributor distributor) {
+                                    mDistributorName = distributor.getName();
+                                    mDistributorAddress = distributor.getAddress();
+                                    Log.d(TAG, "onComplete: distributorLiveData: name: " + mDistributorName + " address: " + mDistributorAddress);
+                                }
+                            });
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+
+                        //Get the Distributor Latlang for setting the map Marker
+                        mLatLngLiveData = mViewModel.getDistributorLatLng();
+                        try {
+                            mLatLngLiveData.observe(FindDistributionActivity.this, new Observer<LatLng>() {
+                                @Override
+                                public void onChanged(LatLng latLng) {
+                                    mDistributorLatLng = latLng;
+                                }
+                            });
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+
+                        //Set the marker
+                        mClickedMarker = mMap.addMarker(new MarkerOptions()
+                                .position(mDistributorLatLng)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                                .title(mDistributorName)
+                                .snippet(mDistributorAddress));
 
 
-                        //Create new geoQuery using the User's location
+                                //Create new geoQuery using the User's location
 //                        GeoQuery geoQuery = mGeoFire.queryAtLocation(new GeoLocation(mUserLocation.getLatitude(), mUserLocation.getLongitude()),10);
 //                        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
 //                            @Override

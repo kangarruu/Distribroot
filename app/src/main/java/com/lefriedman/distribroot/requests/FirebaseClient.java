@@ -11,6 +11,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.lefriedman.distribroot.livedata.DataSnapshotLiveData;
 import com.lefriedman.distribroot.models.Distributor;
 import com.lefriedman.distribroot.models.retrofit.Result;
@@ -48,9 +49,9 @@ public class FirebaseClient {
     }
 
     public LiveData<DataSnapshot> getDataSnapshotLiveData(String key) {
-        mDatasnapshotLiveData = new DataSnapshotLiveData(DISTRIBUTORS_REF.child(key));
-        Log.d(TAG, "FirebaseClient getDataSnapshotLiveData: returning dataSnapshot LiveData at key: " + key + " datasnapshot: " + mDatasnapshotLiveData.getValue());
-
+        Query query = DISTRIBUTORS_REF.child(key);
+        mDatasnapshotLiveData = new DataSnapshotLiveData(query);
+        Log.d(TAG, "FirebaseClient getDataSnapshotLiveData: returning dataSnapshot LiveData at key: " + key + " datasnapshot: " + mDatasnapshotLiveData);
         return mDatasnapshotLiveData;
     }
 
