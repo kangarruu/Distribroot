@@ -24,13 +24,27 @@ public class DistributionRepository {
         } return sInstance;
     }
 
-    public LiveData<DataSnapshot> getDataSnapshotLiveData(String key) {
-        Log.d(TAG, "DistributionRepository getDataSnapshotLiveData: getting liveData<Snapshot> at key: " + key);
-        return firebaseClient.getDataSnapshotLiveData(key);
-    }
+//    public LiveData<DataSnapshot> getDataSnapshotLiveData(String key) {
+//        Log.d(TAG, "DistributionRepository getDataSnapshotLiveData: getting liveData<Snapshot> at key: " + key);
+//        return firebaseClient.getDataSnapshotLiveData(key);
+//    }
 
     public LiveData<String> makeRetrofitGeocodeApiCall(String name, String phone, String address, String city, String state, String zip, String apiKey){
         return firebaseClient.makeRetrofitGeocodeApiCall(name, phone, address, city, state, zip, apiKey);
+    }
+
+//    public LiveData<DataSnapshot> getDistributorSnapshotLiveData(String key) {
+//        Log.d(TAG, "DistributionRepository getDistributorLiveData: getting liveData<Snapshot> at key: " + key);
+//        return firebaseClient.getDistributorSnapshotLiveData(key);
+//    }
+
+    public LiveData<DataSnapshot> getDistributorSnapshotLiveData() {
+        Log.d(TAG, "DistributionRepository getDistributorSnapshotLiveData: getting Distributor Snapshot ");
+        return firebaseClient.getDistributorSnapshotLiveData();
+    }
+
+    public static void makeFirebaseDistributorQuery(String key) {
+        FirebaseClient.makeFirebaseDistributorQuery(key);
     }
 
 

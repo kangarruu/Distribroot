@@ -3,11 +3,9 @@ package com.lefriedman.distribroot.viewmodels;
 import android.location.Location;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.firebase.geofire.GeoFire;
@@ -15,11 +13,8 @@ import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.lefriedman.distribroot.livedata.DataSnapshotLiveData;
 import com.lefriedman.distribroot.models.Distributor;
 import com.lefriedman.distribroot.repositories.DistributionRepository;
 
@@ -32,7 +27,9 @@ public class FindDistributionViewModel extends ViewModel {
     private GeoFire mGeoFire;
     private LiveData<Distributor> mDistributorLiveData;
     private LiveData<DataSnapshot> dataSnapshotLiveData;
+    private LiveData<DataSnapshot> dataSnapshot;
     private MutableLiveData<LatLng> mDistributorLatLng;
+
 
 
     public FindDistributionViewModel() {
@@ -41,21 +38,22 @@ public class FindDistributionViewModel extends ViewModel {
         mDistributorLatLng = new MutableLiveData<>();
     }
 
-    public LiveData<Distributor> makeGeoQuery(Location result) {
+    public void makeGeoQuery(Location result) {
         GeoQuery geoQuery = mGeoFire.queryAtLocation(new GeoLocation(result.getLatitude(), result.getLongitude()),10);
         Log.d(TAG, "makeGeoQuery: Making geoQuery" + geoQuery.toString());
 
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
-            public void onKeyEntered(String key, final GeoLocation location) {
-                dataSnapshotLiveData = mRepository.getDataSnapshotLiveData(key);
-                Log.d(TAG, "onKeyEntered: Adding geoquery event listener withkey: " + key + " dataSnapshotLiveData: " + dataSnapshotLiveData);
-                mDistributorLiveData = Transformations.map(dataSnapshotLiveData, new Deserializer());
+            public void onKeyEntered(String key, GeoLocation location) {
+                mDistributorLatLng.setValue(new LatLng(location.latitude, location.longitude));
+                Log.d(TAG, "onKeyEntered: mDistributorLatlang = " + mDistributorLatLng.getValue());
 
-                if (location != null) {
-                    mDistributorLatLng.setValue(new LatLng(location.latitude, location.longitude));
-                    Log.d(TAG, "onKeyEntered: mDistributorLatlang = " + mDistributorLatLng);
-                }
+                mRepository.makeFirebaseDistributorQuery(key);
+                Log.d(TAG, "makeGeoQuery onKeyEntered: making FirebaseQuery for key: " + key );
+
+//                mDistributorLiveData = Transformations.map(dataSnapshotLiveData, new Deserializer());
+//                Log.d(TAG, "onKeyEntered: mDistributorLiveData: " + mDistributorLiveData.getValue());
+//
 
             }
 
@@ -78,14 +76,19 @@ public class FindDistributionViewModel extends ViewModel {
             public void onGeoQueryError(DatabaseError error) {
 
             }
+
         });
-
-        return mDistributorLiveData;
-
     }
 
+
     public LiveData<LatLng> getDistributorLatLng(){
+        Log.d(TAG, "getDistributorLatLng: Returning mDistributorLatLng:  " + mDistributorLatLng.getValue());
         return mDistributorLatLng;
+    }
+
+    public LiveData<DataSnapshot> getDistributorSnapshotLiveData() {
+        Log.d(TAG, "ViewModel getDistributorSnapshotLiveData: getting liveData<Snapshot> from Repository ");
+        return mRepository.getDistributorSnapshotLiveData();
     }
 
 

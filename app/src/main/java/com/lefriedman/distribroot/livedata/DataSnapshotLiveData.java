@@ -28,7 +28,7 @@ public class DataSnapshotLiveData extends LiveData<DataSnapshot> {
     @Override
     protected void onActive() {
         Log.d(TAG, "onActive");
-        mQuery.addValueEventListener(eventListener);
+        mQuery.addListenerForSingleValueEvent(eventListener);
     }
 
     @Override
@@ -41,6 +41,7 @@ public class DataSnapshotLiveData extends LiveData<DataSnapshot> {
     private class FirebaseValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
+            Log.e(TAG, "FirebaseValueEventListener setting snapshot: " + snapshot.getValue());
             setValue(snapshot);
         }
 
