@@ -1,10 +1,11 @@
 package com.lefriedman.distribroot.repositories;
 
+import android.location.Location;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.google.firebase.database.DataSnapshot;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.lefriedman.distribroot.requests.FirebaseClient;
 
 public class DistributionRepository {
@@ -24,29 +25,19 @@ public class DistributionRepository {
         } return sInstance;
     }
 
-//    public LiveData<DataSnapshot> getDataSnapshotLiveData(String key) {
-//        Log.d(TAG, "DistributionRepository getDataSnapshotLiveData: getting liveData<Snapshot> at key: " + key);
-//        return firebaseClient.getDataSnapshotLiveData(key);
-//    }
-
+    //Send the retrofit params down to the FirebaseClient for making Retrofit GeoApi query
     public LiveData<String> makeRetrofitGeocodeApiCall(String name, String phone, String address, String city, String state, String zip, String apiKey){
         return firebaseClient.makeRetrofitGeocodeApiCall(name, phone, address, city, state, zip, apiKey);
     }
 
-//    public LiveData<DataSnapshot> getDistributorSnapshotLiveData(String key) {
-//        Log.d(TAG, "DistributionRepository getDistributorLiveData: getting liveData<Snapshot> at key: " + key);
-//        return firebaseClient.getDistributorSnapshotLiveData(key);
-//    }
-
-    public LiveData<DataSnapshot> getDistributorSnapshotLiveData() {
-        Log.d(TAG, "DistributionRepository getDistributorSnapshotLiveData: getting Distributor Snapshot ");
-        return firebaseClient.getDistributorSnapshotLiveData();
+    //Send a result of GetLastLocation() method to FirebaseClient to make a GeoQuery
+    public static void makeGeoQuery(Location location) {
+        FirebaseClient.makeGeoQuery(location);
     }
 
-    public static void makeFirebaseDistributorQuery(String key) {
-        FirebaseClient.makeFirebaseDistributorQuery(key);
+    //Return MarkerOptions LiveData from FirebaseClient for the Distributors that satisfy the GeoQuery
+    public LiveData<MarkerOptions> getDistributorMarkerOptionsLiveData() {
+        return FirebaseClient.getDistributorMarkerOptionsLiveData();
     }
-
-
 
 }

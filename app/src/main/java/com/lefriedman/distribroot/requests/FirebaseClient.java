@@ -1,5 +1,6 @@
 package com.lefriedman.distribroot.requests;
 
+import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,13 +9,14 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.lefriedman.distribroot.livedata.DataSnapshotLiveData;
 import com.lefriedman.distribroot.models.Distributor;
 import com.lefriedman.distribroot.models.retrofit.Result;
 import com.lefriedman.distribroot.models.retrofit.ResultWrapper;
@@ -33,16 +35,17 @@ public class FirebaseClient {
     private static final String TAG = FirebaseClient.class.getSimpleName();
 
     private static FirebaseClient sInstance;
+    private static GeoFire mGeoFire;
     private GeolocationApi mGeoApi;
     private MutableLiveData<String> toastResponseObserverLiveData = new MutableLiveData<>();
-    private GeoFire mGeoFire;
-    private DataSnapshotLiveData mDatasnapshotLiveData;
-    private static MutableLiveData<DataSnapshot> mDistributorSnapshot;
+    private static MutableLiveData<MarkerOptions> mDistributorMarkerLiveData;
+    private static LatLng mDistributorLatLng;
+
 
     public FirebaseClient() {
         mGeoApi = new RetrofitServiceGenerator().getGeolocationApi();
         mGeoFire = new GeoFire(DISTRIBUTOR_LOCATION_REF);
-        mDistributorSnapshot = new MutableLiveData<>();
+        mDistributorMarkerLiveData = new MutableLiveData<>();
     }
 
     //Return singleton FirebaseClient
@@ -52,12 +55,6 @@ public class FirebaseClient {
         } return sInstance;
     }
 
-//    public LiveData<DataSnapshot> getDataSnapshotLiveData(String key) {
-//        Query query = DISTRIBUTORS_REF.child(key);
-//        mDatasnapshotLiveData = new DataSnapshotLiveData(query);
-//        Log.d(TAG, "FirebaseClient getDataSnapshotLiveData: returning dataSnapshot LiveData at query: " + query + " datasnapshot: " + mDatasnapshotLiveData.getValue());
-//        return mDatasnapshotLiveData;
-//    }
 
     //Make the Geolocation retrofit call and store result in GeoFire
     public LiveData<String> makeRetrofitGeocodeApiCall(String name, String phone, String address, String city, String state, String zip, String apiKey){
@@ -121,29 +118,69 @@ public class FirebaseClient {
         return toastResponseObserverLiveData;
     }
 
+    //Make a GeoQuery using the Location result from the FindDistributionActivity getLastLocation() method
+    //postValue() to the MarkerOptions LiveData
+    public static void makeGeoQuery(Location result) {
+        GeoQuery geoQuery = mGeoFire.queryAtLocation(new GeoLocation(result.getLatitude(), result.getLongitude()),10);
+        Log.d(TAG, "makeGeoQuery: Making geoQuery" + geoQuery);
 
-    public static void makeFirebaseDistributorQuery(String key) {
-        Log.d(TAG, "FirebaseClient makeFirebaseDistributorQuery: making FirebaseQuery at key: " + key);
-        DISTRIBUTORS_REF.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                Log.d(TAG, "makeGeoQuery onKeyEntered: making FirebaseQuery for key: " + key );
+                DISTRIBUTORS_REF.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Distributor distributor = snapshot.getValue(Distributor.class);
+                        Log.d(TAG, "Firebase ValueEventListener current distributor: " + distributor);
+
+                        //set the distributor LatLang for the map Marker
+                        if (location != null) {
+                            mDistributorLatLng = new LatLng(location.latitude, location.longitude);
+                        }
+
+                        //create the new MarkerOptions and post to LiveData
+                        mDistributorMarkerLiveData.postValue(new MarkerOptions()
+                                .position(mDistributorLatLng)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                                .title(distributor.getName())
+                                .snippet(distributor.getAddress()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG, "ValueEventListener on Cancelled: error reading Distributor from Database " + error.toException());
+                    }
+                });
+            }
 
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                mDistributorSnapshot.postValue(snapshot);
-                Log.d(TAG, "makeFirebaseDistributorQuery: onDataChange mDistributorSnapshot" + mDistributorSnapshot.getValue());
+            public void onKeyExited(String key) {
 
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d(TAG, "makeFirebaseDistributorQuery onCancelled: error: " + error.getMessage());
+            public void onKeyMoved(String key, GeoLocation location) {
+
             }
+
+            @Override
+            public void onGeoQueryReady() {
+
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+
         });
     }
 
-    public LiveData<DataSnapshot> getDistributorSnapshotLiveData() {
-        Log.d(TAG, "getDistributorSnapshotLiveData: returning mDistributorSnapshot: " + mDistributorSnapshot.getValue());
-        return mDistributorSnapshot;
+    //Return the MarkerOptions LiveData set in the makeGeoQuery() method
+    public static LiveData<MarkerOptions> getDistributorMarkerOptionsLiveData() {
+        Log.d(TAG, "getDistributorMarkerOptionsLiveData: returning mDistributorMarkerLiveData: " + mDistributorMarkerLiveData.getValue());
+        return mDistributorMarkerLiveData;
     }
-
 
 }
