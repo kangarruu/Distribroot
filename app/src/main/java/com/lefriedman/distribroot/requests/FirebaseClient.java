@@ -63,6 +63,7 @@ public class FirebaseClient {
 
         //Make a retrofit call using an instance of the GeolocationApi
         Call<ResultWrapper> geoResult = mGeoApi.getGeocode(concatAddress, apiKey);
+        Log.d(TAG, "makeRetrofitGeocodeApiCall: APIKEY == " + apiKey);
         geoResult.enqueue(new Callback<ResultWrapper>() {
             @Override
             public void onResponse(Call<ResultWrapper> call, Response<ResultWrapper> response) {
@@ -140,11 +141,14 @@ public class FirebaseClient {
                         }
 
                         //create the new MarkerOptions and post to LiveData
-                        mDistributorMarkerLiveData.postValue(new MarkerOptions()
+                        MarkerOptions markerOptions = new MarkerOptions()
                                 .position(mDistributorLatLng)
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                                 .title(distributor.getName())
-                                .snippet(distributor.getAddress()));
+                                .snippet(distributor.getAddress());
+                        Log.d(TAG, "Firebase ValueEventListener new MarkerOptions being created: " + markerOptions);
+
+                        mDistributorMarkerLiveData.setValue(markerOptions);
                     }
 
                     @Override

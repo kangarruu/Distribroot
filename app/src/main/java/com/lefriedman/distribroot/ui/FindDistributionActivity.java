@@ -43,7 +43,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.lefriedman.distribroot.R;
-import com.lefriedman.distribroot.models.Distributor;
 import com.lefriedman.distribroot.viewmodels.FindDistributionViewModel;
 
 import static com.lefriedman.distribroot.util.Constants.CHECK_SETTINGS_REQUEST;
@@ -58,9 +57,6 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
     private LocationRequest mLocationRequest;
     private Location mUserLocation;
     private GoogleMap mMap;
-    private LatLng mDistributorLatLng;
-    private String mDistributorName;
-    private String mDistributorAddress;
     private Marker mClickedMarker;
     private Marker mUserLocationMarker;
     private Boolean isCameraViewSet = false;
@@ -84,6 +80,7 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
         mDistributorMarkerOptions.observe(this, new Observer<MarkerOptions>() {
             @Override
             public void onChanged(MarkerOptions markerOptions) {
+                Log.d(TAG, "LiveData being observed. Setting new Marker on the map: " + markerOptions.getTitle());
                 mMap.addMarker(markerOptions);
             }
         });
@@ -228,21 +225,11 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
         }
     }
 
-    private void addDistributorMapMarkers() {
-        try {
-            mMap.addMarker(new MarkerOptions()
-                    .position(mDistributorLatLng)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                    .title(mDistributorName)
-                    .snippet(mDistributorAddress));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady called");
         mMap = googleMap;
         mMap.setOnInfoWindowClickListener(this);
         mMap.setContentDescription(getString(R.string.find_map_content_description));

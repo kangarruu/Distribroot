@@ -22,6 +22,7 @@ public class Constants {
     public static final DatabaseReference DISTRIBUTORS_REF = FirebaseDatabase.getInstance()
             .getReference().child("distributors");
 
+    public static final String SHARED_PREF = "com.lefriedman.distribroot.SharedPref";
 
 
 }

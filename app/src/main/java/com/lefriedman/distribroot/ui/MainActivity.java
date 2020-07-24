@@ -5,9 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.preference.PreferenceManager;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +33,7 @@ import java.util.Arrays;
 import static com.lefriedman.distribroot.util.Constants.ERROR_DIALOG_REQUEST;
 import static com.lefriedman.distribroot.util.Constants.LOCATION_PERMISSION_REQUEST;
 import static com.lefriedman.distribroot.util.Constants.RC_SIGN_IN;
+import static com.lefriedman.distribroot.util.Constants.SHARED_PREF;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -39,8 +42,6 @@ public class MainActivity extends BaseActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private ActivityMainBinding mDataBinder;
     private boolean isLocationPermissionGranted = false;
-    private SharedPreferences sharedPref;
-    private SharedPreferences.Editor editor;
 
 
 
@@ -63,10 +64,9 @@ public class MainActivity extends BaseActivity {
         attachSignOutClickListener();
 
         //Create preference boolean to check if location dialog was previously shown
-        sharedPref = getApplicationContext().getSharedPreferences("SharedPref", MODE_PRIVATE);
-        editor = sharedPref.edit();
+        SharedPreferences sharedPref = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("isFirstTimeRequest", true).apply();
-
     }
 
     private void attachStartDistributionClickListener() {
@@ -126,9 +126,11 @@ public class MainActivity extends BaseActivity {
                 //and request permissions
                 //If isFirstTimeRequest is false then User has selected "Never ask again", display error Toast
             } else {
+                SharedPreferences sharedPref = getSharedPreferences(SHARED_PREF, Context.MODE_APPEND);
                 if (sharedPref.getBoolean("isFirstTimeRequest", true)) {
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST);
+                    SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putBoolean("isFirstTimeRequest", false).commit();
                 } else {
                     Toast.makeText(this, R.string.main_location_request_disabled_toast_msg, Toast.LENGTH_LONG).show();
