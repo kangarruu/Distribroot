@@ -23,7 +23,7 @@
     //distributor info form
     <string name="distributor_form_btn_sign_out">Sign out</string>
     <string name="distributor_form_btn_submit">Submit</string>
-    <string name="distributor_form_name_hint">Name</string>
+    <string name="distributor_form_name_hint">Distributor Name</string>
     <string name="distributor_form_email_hint">E-mail</string>
     <string name="distributor_form_phone_hint">Phone Number</string>
     <string name="distributor_form_address_hint">Street Address</string>
@@ -46,5 +46,11 @@
     //Find distribution screen
     <string name="distribution_map_marker_text">Your Location</string>
     <string name="find_map_content_description">Map with local distributions</string>
+
+    //BottomSheet
+    <string name="bottom_sheet_subscribe_label">Subscribe for updates</string>
+
+    //DataBindingAdapter
+    <string name="validation_error_empty">Field cannot be empty</string>
 
 </resources>

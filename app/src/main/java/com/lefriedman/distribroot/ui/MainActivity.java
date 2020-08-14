@@ -172,7 +172,7 @@ public class MainActivity extends BaseActivity {
                 if (grantResults.length > 0
                         && grantResults [0] == PackageManager.PERMISSION_GRANTED){
                     isLocationPermissionGranted = true;
-                    Intent intent = new Intent(MainActivity.this, FindDistributionActivity.class);
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
         }
@@ -199,33 +199,8 @@ public class MainActivity extends BaseActivity {
     }
 
 
-//
-//    private void displayGPSRequestDialog() {
-//        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-//        dialogBuilder.setMessage(R.string.main_gps_request_dialog_msg)
-//                .setNegativeButton(R.string.main_location_request_dialog_cancel_btn_txt, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        return;
-//                    }
-//                })
-//                .setPositiveButton(R.string.main_location_request_dialog_yes_btn_txt, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent enableGpsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                        startActivityForResult(enableGpsIntent, GPS_PERMISSION_REQUEST_ID);
-//                        return;
-//                    }
-//                });
-//
-//        final AlertDialog alertDialog = dialogBuilder.create();
-//        alertDialog.show();
-//    }
-
-
     private void InitFirebaseAuth() {
         mAuth = FirebaseAuth.getInstance();
-
         //Set an AuthStateListener to listen to login changes
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -235,6 +210,8 @@ public class MainActivity extends BaseActivity {
                     //User is signed in, proceed to mainActivity
                     Log.d(TAG, "onAuthStateChanged: User authenticated");
 
+                    //Todo create Singelton User and set the details
+//                    mUser = user;
                     onSignedInInitialize(user.getDisplayName());
 
                 } else {

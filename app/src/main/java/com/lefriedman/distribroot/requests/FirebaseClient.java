@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.lefriedman.distribroot.models.Distributor;
+import com.lefriedman.distribroot.liveData.Event;
 import com.lefriedman.distribroot.models.retrofit.Result;
 import com.lefriedman.distribroot.models.retrofit.ResultWrapper;
 
@@ -37,9 +38,10 @@ public class FirebaseClient {
     private static FirebaseClient sInstance;
     private static GeoFire mGeoFire;
     private GeolocationApi mGeoApi;
-    private MutableLiveData<String> toastResponseObserverLiveData = new MutableLiveData<>();
+    private MutableLiveData<Event<String>> toastResponseObserverLiveData = new MutableLiveData<>();
     private static MutableLiveData<MarkerOptions> mDistributorMarkerLiveData;
     private static LatLng mDistributorLatLng;
+    public static Boolean distributionSuccessful = false;
 
 
     public FirebaseClient() {
@@ -57,7 +59,8 @@ public class FirebaseClient {
 
 
     //Make the Geolocation retrofit call and store result in GeoFire
-    public LiveData<String> makeRetrofitGeocodeApiCall(String name, String phone, String address, String city, String state, String zip, String apiKey){
+    public LiveData<Event<String>> makeRetrofitGeocodeApiCall(String name, String phone, String address, String city, String state, String zip, String apiKey){
+        distributionSuccessful = false;
         String concatAddress = address + " " + city + " " + state + " " + zip;
         Log.d(TAG, "Making Retrofit call in FirebaseClient makeRetrofitGeocodeApiCall. Address = " + concatAddress);
 
@@ -88,22 +91,27 @@ public class FirebaseClient {
                                     Log.d(TAG, "GeoFire onComplete: There was an error adding distributor geoCoordinates to GeoFire ");
                                 }else {
                                     Log.d(TAG, "GeoFire onComplete: new distributor geoCoordinates saved to GeoFire successfully");
-                                    toastResponseObserverLiveData.postValue("New distributor saved successfully");
+                                    distributionSuccessful = true;
+                                    toastResponseObserverLiveData.postValue(new Event<>("New distributor saved successfully"));
                                 }
                             }
                         });
                         break;
                     case "INVALID_REQUEST":
-                        toastResponseObserverLiveData.postValue("Invalid request, please check address components");
+                        distributionSuccessful = false;
+                        toastResponseObserverLiveData.postValue(new Event<>("Invalid request, please check address components"));
                         break;
                     case "ZERO_RESULTS":
-                        toastResponseObserverLiveData.postValue("No results, please check address components");
+                        distributionSuccessful = false;
+                        toastResponseObserverLiveData.postValue(new Event<>("No results, please check address components"));
                         break;
                     case "OVER_QUERY_LIMIT":
+                        distributionSuccessful = false;
                         Log.d(TAG, "GeoResult onResponse: OVER_QUERY_LIMIT");
                         break;
                     case "UNKNOWN_ERROR":
-                        toastResponseObserverLiveData.postValue("An unknown error has occurred, please try again later");
+                        distributionSuccessful = false;
+                        toastResponseObserverLiveData.postValue(new Event<>("An unknown error has occurred, please try again later"));
                         break;
                     default:
                         Log.d(TAG, "GeoResult onResponse: " + response.body().getStatus());
@@ -141,14 +149,17 @@ public class FirebaseClient {
                         }
 
                         //create the new MarkerOptions and post to LiveData
-                        MarkerOptions markerOptions = new MarkerOptions()
-                                .position(mDistributorLatLng)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                                .title(distributor.getName())
-                                .snippet(distributor.getAddress());
-                        Log.d(TAG, "Firebase ValueEventListener new MarkerOptions being created: " + markerOptions);
+                        if (distributor != null){
+                            MarkerOptions markerOptions = new MarkerOptions()
+                                    .position(mDistributorLatLng)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                                    .title(distributor.getName())
+                                    .snippet(distributor.getAddress());
+                            Log.d(TAG, "Firebase ValueEventListener new MarkerOptions being created: " + markerOptions);
 
-                        mDistributorMarkerLiveData.setValue(markerOptions);
+                            mDistributorMarkerLiveData.setValue(markerOptions);
+                        }
+
                     }
 
                     @Override

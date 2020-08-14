@@ -10,6 +10,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,12 +44,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.lefriedman.distribroot.R;
 import com.lefriedman.distribroot.viewmodels.FindDistributionViewModel;
 
 import static com.lefriedman.distribroot.util.Constants.CHECK_SETTINGS_REQUEST;
 
-public class FindDistributionActivity extends AppCompatActivity implements OnMapReadyCallback, OnInfoWindowClickListener {
+public class FindDistributionActivity extends AppCompatActivity implements OnMapReadyCallback, OnInfoWindowClickListener, BottomSheetDialogFragment.BottomSheetListener {
 
     private static final String TAG = FindDistributionActivity.class.getSimpleName();
 
@@ -81,7 +85,9 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
             @Override
             public void onChanged(MarkerOptions markerOptions) {
                 Log.d(TAG, "LiveData being observed. Setting new Marker on the map: " + markerOptions.getTitle());
-                mMap.addMarker(markerOptions);
+                if (mMap != null){
+                    mMap.addMarker(markerOptions);
+                }
             }
         });
     }
@@ -238,8 +244,15 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Toast.makeText(FindDistributionActivity.this, "Testing infoWindow " + marker.getTitle(), Toast.LENGTH_LONG).show();
+        mClickedMarker = marker;
+        displayBottomSheet();
 
+    }
+
+    //Create bottomSheet for mapMarker click
+    public void displayBottomSheet() {
+        BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetDialogFragment(mClickedMarker.getTitle(), mClickedMarker.getSnippet());
+        bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 
     //Implement the LocationCallback interface
@@ -261,4 +274,8 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
     };
 
 
+    @Override
+    public void onSwitchSelected(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
 }

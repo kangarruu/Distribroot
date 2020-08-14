@@ -1,11 +1,11 @@
 package com.lefriedman.distribroot.repositories;
 
 import android.location.Location;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.lefriedman.distribroot.liveData.Event;
 import com.lefriedman.distribroot.requests.FirebaseClient;
 
 public class DistributionRepository {
@@ -26,7 +26,7 @@ public class DistributionRepository {
     }
 
     //Send the retrofit params down to the FirebaseClient for making Retrofit GeoApi query
-    public LiveData<String> makeRetrofitGeocodeApiCall(String name, String phone, String address, String city, String state, String zip, String apiKey){
+    public LiveData<Event<String>> makeRetrofitGeocodeApiCall(String name, String phone, String address, String city, String state, String zip, String apiKey){
         return firebaseClient.makeRetrofitGeocodeApiCall(name, phone, address, city, state, zip, apiKey);
     }
 

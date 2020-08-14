@@ -4,94 +4,161 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.lefriedman.distribroot.viewmodels.DistributorProfileViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
+        android:padding="16dp"
+        tools:context=".ui.DistributorProfileActivity">
 
-        <EditText
-            android:id="@+id/distributor_name_editText"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/distributor_name_editText_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:autofillHints="@string/distributor_form_name_hint"
-            android:ems="10"
-            android:hint="@string/distributor_form_name_hint"
-            android:inputType="textPersonName"
+            app:errorEnabled="true"
+            app:errorText="@{viewModel.name}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/distributor_phone_editText"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/distributor_name_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/distributor_form_name_hint"
+                android:ems="10"
+                android:hint="@string/distributor_form_name_hint"
+                android:inputType="textPersonName"
+                android:text="@={viewModel.name}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/distributor_phone_editText_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:errorText="@{viewModel.phone}"
             android:layout_marginTop="16dp"
-            android:autofillHints="@string/distributor_form_phone_hint"
-            android:ems="10"
-            android:hint="@string/distributor_form_phone_hint"
-            android:inputType="phone"
-            app:layout_constraintStart_toStartOf="@+id/distributor_name_editText"
-            app:layout_constraintTop_toBottomOf="@+id/distributor_name_editText" />
+            app:layout_constraintStart_toStartOf="@+id/distributor_name_editText_layout"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_name_editText_layout">
 
-        <EditText
-            android:id="@+id/distributor_address_editText"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/distributor_phone_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/distributor_form_phone_hint"
+                android:ems="10"
+                android:hint="@string/distributor_form_phone_hint"
+                android:inputType="phone"
+                android:text="@={viewModel.phone}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/distributor_address_editText_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:errorText="@{viewModel.address}"
             android:layout_marginTop="16dp"
-            android:autofillHints="@string/distributor_form_address_hint"
-            android:ems="10"
-            android:hint="@string/distributor_form_address_hint"
-            android:inputType="textPostalAddress"
-            app:layout_constraintStart_toStartOf="@+id/distributor_phone_editText"
-            app:layout_constraintTop_toBottomOf="@+id/distributor_phone_editText" />
+            app:layout_constraintStart_toStartOf="@+id/distributor_phone_editText_layout"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_phone_editText_layout" >
 
-        <EditText
-            android:id="@+id/distributor_city_editText"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/distributor_address_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/distributor_form_address_hint"
+                android:ems="10"
+                android:hint="@string/distributor_form_address_hint"
+                android:inputType="textPostalAddress"
+                android:text="@={viewModel.address}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/distributor_city_editText_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:errorText="@{viewModel.city}"
             android:layout_marginTop="16dp"
-            android:autofillHints="@string/distributor_form_city_hint"
-            android:ems="10"
-            android:hint="@string/distributor_form_city_hint"
-            android:inputType="textPostalAddress"
-            app:layout_constraintStart_toStartOf="@+id/distributor_address_editText"
-            app:layout_constraintTop_toBottomOf="@+id/distributor_address_editText" />
+            app:layout_constraintStart_toStartOf="@+id/distributor_address_editText_layout"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_address_editText_layout" >
 
-        <EditText
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/distributor_city_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/distributor_form_city_hint"
+                android:ems="10"
+                android:hint="@string/distributor_form_city_hint"
+                android:inputType="textPostalAddress"
+                android:text="@={viewModel.city}"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/distributor_state_editText_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:errorText="@{viewModel.state}"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@+id/distributor_city_editText_layout"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_city_editText_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/distributor_state_editText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:autofillHints="@string/distributor_form_state_hint"
             android:ems="10"
             android:hint="@string/distributor_form_state_hint"
             android:inputType="textPostalAddress"
-            app:layout_constraintStart_toStartOf="@+id/distributor_city_editText"
-            app:layout_constraintTop_toBottomOf="@+id/distributor_city_editText" />
+            android:text="@={viewModel.state}"/>
 
-        <EditText
-            android:id="@+id/distributor_zip_editText"
-            android:layout_width="wrap_content"
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/distributor_zip_editText_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:autofillHints="@string/distributor_form_zip_hint"
-            android:ems="10"
-            android:hint="@string/distributor_form_zip_hint"
-            android:inputType="textPostalAddress"
-            app:layout_constraintStart_toStartOf="@+id/distributor_state_editText"
-            app:layout_constraintTop_toBottomOf="@+id/distributor_state_editText" />
+            app:errorEnabled="true"
+            app:errorText="@{viewModel.zip}"
+            app:layout_constraintStart_toStartOf="@+id/distributor_state_editText_layout"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_state_editText_layout" >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/distributor_zip_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/distributor_form_zip_hint"
+                android:ems="10"
+                android:hint="@string/distributor_form_zip_hint"
+                android:inputType="textPostalAddress"
+                android:text="@={viewModel.zip}"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <Button
             android:id="@+id/user_submit_form_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:text="@string/distributor_form_btn_submit"
+            android:enabled="@{viewModel.formIsValid}"
+            app:layout_constraintStart_toStartOf="@+id/distributor_zip_editText_layout"
+            app:layout_constraintTop_toBottomOf="@+id/distributor_zip_editText_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
