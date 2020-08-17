@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Distribroot</string>
-
-
+    <string name="sign_out">Sign out</string>
+    <string name="settings">Settings</string>
 
     //FirebaseAuthUI sign in
     <string name="login_quick_connect_label">quickly connect with</string>
@@ -11,7 +11,6 @@
     <string name="login_phone_btn_text">Continue with phone</string>
 
     //User info form
-    <string name="user_form_btn_sign_out">Sign out</string>
     <string name="user_form_btn_submit">Submit</string>
     <string name="user_form_first_name_hint">First Name</string>
     <string name="user_form_last_name_hint">Last Name</string>
@@ -33,7 +32,10 @@
 
     //Welcome screen
     <string name="welcome_tv">Welcome to Distribroot</string>
-    <string name="welcome_description_tv">Locate a distributor near you and subscribe to real time updates. Or start a new distribution center.</string>
+    <string name="welcome_description_locate_tv">Locate distributors near you</string>
+    <string name="welcome_description_cont_tv">Subscribe to real time updates</string>
+    <string name="welcome_description_start_tv">Start a new distribution center</string>
+
     <string name="welcome_user_btn_txt">Find Local Distribution</string>
     <string name="welcome_distributor_btn_txt">Create New Distribution</string>
     <string name="main_google_play_not_enabled_error_toast">Unable to locate distribution. Please update Google Play Services to continue</string>

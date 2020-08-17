@@ -13,17 +13,26 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         tools:context=".ui.DistributorProfileActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:elevation="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/distributor_name_editText_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:errorEnabled="true"
             app:errorText="@{viewModel.name}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/distributor_name_editText"
@@ -41,6 +50,8 @@
             android:id="@+id/distributor_phone_editText_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:errorEnabled="true"
             app:errorText="@{viewModel.phone}"
             android:layout_marginTop="16dp"
@@ -63,6 +74,8 @@
             android:id="@+id/distributor_address_editText_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:errorEnabled="true"
             app:errorText="@{viewModel.address}"
             android:layout_marginTop="16dp"
@@ -86,6 +99,8 @@
             android:id="@+id/distributor_city_editText_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:errorEnabled="true"
             app:errorText="@{viewModel.city}"
             android:layout_marginTop="16dp"
@@ -109,6 +124,8 @@
             android:id="@+id/distributor_state_editText_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:errorEnabled="true"
             app:errorText="@{viewModel.state}"
             android:layout_marginTop="16dp"
@@ -133,6 +150,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:errorEnabled="true"
             app:errorText="@{viewModel.zip}"
             app:layout_constraintStart_toStartOf="@+id/distributor_state_editText_layout"
@@ -155,6 +174,8 @@
             android:id="@+id/user_submit_form_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/distributor_form_btn_submit"
             android:enabled="@{viewModel.formIsValid}"
             app:layout_constraintStart_toStartOf="@+id/distributor_zip_editText_layout"

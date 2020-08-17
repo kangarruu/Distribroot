@@ -1,5 +1,8 @@
 package com.lefriedman.distribroot.ui;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import androidx.lifecycle.LiveData;
@@ -10,9 +13,13 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.lefriedman.distribroot.R;
 import com.lefriedman.distribroot.databinding.ActivityDistributorProfileBinding;
 import com.lefriedman.distribroot.liveData.Event;
@@ -44,6 +51,11 @@ public class DistributorProfileActivity extends BaseActivity {
         mDataBinder = DataBindingUtil.setContentView(this, R.layout.activity_distributor_profile);
         mDataBinder.setLifecycleOwner(this);
         mDataBinder.setViewModel(mViewmodel);
+
+        setSupportActionBar(mDataBinder.toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(null);
 
         //Collect user input onClick and return response message to submission
         //LiveData wrapped in EventWrapper to prevent LiveData callback from displaying previous
@@ -79,9 +91,23 @@ public class DistributorProfileActivity extends BaseActivity {
 
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.distributor_menu, menu);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.settings:
+                Toast.makeText(this, "settings selected", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
 }
 

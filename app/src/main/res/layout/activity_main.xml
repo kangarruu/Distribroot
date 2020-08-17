@@ -9,30 +9,60 @@
         android:layout_height="match_parent"
         tools:context=".ui.MainActivity">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/welcome_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome_tv"
+            android:textSize="30sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintVertical_bias="0.25" />
 
 
         <TextView
             android:id="@+id/welcome_description_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
             android:gravity="center_horizontal"
-            android:text="@string/welcome_description_tv"
+            android:text="@string/welcome_description_locate_tv"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/welcome_tv"
             app:layout_constraintStart_toStartOf="@+id/welcome_tv"
             app:layout_constraintTop_toBottomOf="@+id/welcome_tv" />
+
+        <TextView
+            android:id="@+id/welcome_description_cont_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/welcome_description_cont_tv"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/welcome_description_tv"
+            app:layout_constraintStart_toStartOf="@+id/welcome_description_tv"
+            app:layout_constraintTop_toBottomOf="@+id/welcome_description_tv" />
+
+        <TextView
+            android:id="@+id/welcome_description_start_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/welcome_description_start_tv"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/welcome_description_tv"
+            app:layout_constraintStart_toStartOf="@+id/welcome_description_tv"
+            app:layout_constraintTop_toBottomOf="@+id/welcome_description_cont_tv" />
 
 
         <Button
@@ -44,9 +74,9 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:text="@string/welcome_user_btn_txt"
-            app:layout_constraintEnd_toEndOf="@+id/welcome_description_tv"
+            app:layout_constraintEnd_toEndOf="@+id/welcome_tv"
             app:layout_constraintHorizontal_bias="0.558"
-            app:layout_constraintStart_toStartOf="@+id/welcome_description_tv"
+            app:layout_constraintStart_toStartOf="@+id/welcome_tv"
             app:layout_constraintTop_toBottomOf="@+id/welcome_description_tv" />
 
         <Button
@@ -61,16 +91,6 @@
             app:layout_constraintEnd_toEndOf="@+id/welcome_user_btn"
             app:layout_constraintStart_toStartOf="@+id/welcome_user_btn"
             app:layout_constraintTop_toBottomOf="@+id/welcome_user_btn" />
-
-        <Button
-            android:id="@+id/sign_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:text="@string/user_form_btn_sign_out"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/welcome_distributor_btn"
-            app:layout_constraintStart_toStartOf="@+id/welcome_distributor_btn" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

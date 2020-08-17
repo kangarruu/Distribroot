@@ -12,15 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.DistributorProfileActivity"></activity>
-        <activity android:name=".ui.FindDistributionActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/maps_api_key" />
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.MainActivity">
             android:theme="@style/AppTheme.ActionBar.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +26,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ui.UserProfileActivity" />
+
+        <activity android:name=".ui.DistributorProfileActivity"
+            android:parentActivityName=".ui.MainActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.MainActivity"/>
+        </activity>
+
+        <activity android:name=".ui.FindDistributionActivity"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity"/>
+        </activity>
 
         <service
             android:name=".services.FirebaseMessagingService"

@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.preference.PreferenceManager;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -16,6 +15,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -43,8 +45,6 @@ public class MainActivity extends BaseActivity {
     private ActivityMainBinding mDataBinder;
     private boolean isLocationPermissionGranted = false;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +52,9 @@ public class MainActivity extends BaseActivity {
 
         //Data binding
         mDataBinder = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        setSupportActionBar(mDataBinder.toolbar);
+        getSupportActionBar().setTitle(null);
 
         //Initialize Firebase authentication
         InitFirebaseAuth();
@@ -61,7 +64,6 @@ public class MainActivity extends BaseActivity {
         //Set the button click listeners
         attachFindDistributionClickListener();
         attachStartDistributionClickListener();
-        attachSignOutClickListener();
 
         //Create preference boolean to check if location dialog was previously shown
         SharedPreferences sharedPref = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
@@ -100,17 +102,6 @@ public class MainActivity extends BaseActivity {
                 }
             });
         }
-
-    private void attachSignOutClickListener(){
-        mDataBinder.signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AuthUI.getInstance() != null) {
-                    AuthUI.getInstance().signOut(MainActivity.this);
-                }
-            }
-        });
-    }
 
     private void requestLocationPermissions() {
         //Request location permissions to get User's location.
@@ -276,6 +267,28 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.sign_out:
+                if (AuthUI.getInstance() != null) {
+                    AuthUI.getInstance().signOut(MainActivity.this);
+                }
+                return true;
+            case R.id.settings:
+                Toast.makeText(this, "settings selected", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
 }
