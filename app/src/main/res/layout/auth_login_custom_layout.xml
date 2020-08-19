@@ -19,7 +19,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/login_backsplash"
-        tools:srcCompat="@drawable/login_backsplash" />
+        tools:srcCompat="@drawable/login_backsplash"
+        android:contentDescription="@string/login_backsplash_content_description"/>
 
     <ImageView
         android:id="@+id/login_logo_iv"
@@ -30,7 +31,8 @@
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/distribroot_logo" />
+        app:srcCompat="@drawable/distribroot_logo"
+        android:contentDescription="@string/login_logo_content_description"/>
 
 
     <LinearLayout

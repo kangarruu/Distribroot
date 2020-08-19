@@ -9,6 +9,10 @@
     <string name="login_google_btn_text">Continue with Google</string>
     <string name="login_email_btn_text">Continue with e-mail</string>
     <string name="login_phone_btn_text">Continue with phone</string>
+    <string name="login_backsplash_content_description">login backsplash</string>
+    <string name="login_logo_content_description">app logo</string>
+
+
 
     //User info form
     <string name="user_form_btn_submit">Submit</string>
@@ -53,6 +57,7 @@
     <string name="bottom_sheet_subscribe_label">Subscribe for updates</string>
     <string name="bottom_sheet_subscribed_toast_text">Subscribed to </string>
     <string name="bottom_sheet_unsubscribed_toast_text">Unsubscribed from </string>
+    <string name="bottom_sheet_marker_icon_content_description">marker icon</string>
 
 
     //PreferenceScreen
