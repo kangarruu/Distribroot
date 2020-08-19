@@ -12,13 +12,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".DistribrootWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/distribroot_widget_info" />
+        </receiver>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/maps_api_key" />
 
-        <activity
-            android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:launchMode="singleTop">
             android:theme="@style/AppTheme.ActionBar.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,21 +35,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.UserProfileActivity" />
-
-        <activity android:name=".ui.DistributorProfileActivity"
-            android:parentActivityName=".ui.MainActivity">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".ui.MainActivity"/>
-        </activity>
-
-        <activity android:name=".ui.FindDistributionActivity"
+        <activity
+            android:name=".ui.DistributorProfileActivity"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity"/>
+                android:value=".ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.FindDistributionActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
         </activity>
 
         <service
@@ -50,6 +59,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <service android:name=".services.WidgetService"/>
     </application>
 
 </manifest>

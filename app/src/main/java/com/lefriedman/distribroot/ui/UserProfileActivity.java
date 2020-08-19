@@ -28,6 +28,7 @@ import java.util.Arrays;
 
 import static com.lefriedman.distribroot.util.Constants.RC_SIGN_IN;
 
+//Class not fully implemented, please ignore for the purposes of the project
 public class UserProfileActivity extends BaseActivity{
 
     private static final String TAG = UserProfileActivity.class.getSimpleName();

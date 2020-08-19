@@ -23,6 +23,13 @@ public class Constants {
             .getReference().child("distributors");
 
     public static final String SHARED_PREF = "com.lefriedman.distribroot.SharedPref";
+    public static final String SUBSCRIBED_KEY = "com.lefriedman.distribroot.SharedPref.isSubscribed";
+    public static final String DISTRIBUTOR_ID_KEY = "com.lefriedman.distribroot.SharedPref.distributorId";
+
+
+    //widget actions
+    public static final String WIDGET_ACTION = "com.lefriedman.distribroot.action";
+
 
 
 }

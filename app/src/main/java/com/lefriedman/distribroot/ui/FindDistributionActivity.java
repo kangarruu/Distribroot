@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -45,7 +46,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.lefriedman.distribroot.DistribrootWidget;
 import com.lefriedman.distribroot.R;
+import com.lefriedman.distribroot.services.WidgetService;
 import com.lefriedman.distribroot.viewmodels.FindDistributionViewModel;
 
 import static com.lefriedman.distribroot.util.Constants.CHECK_SETTINGS_REQUEST;
@@ -65,6 +68,10 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
     private Boolean isCameraViewSet = false;
     private FindDistributionViewModel mViewModel;
     private SupportMapFragment mapFragment;
+    private SharedPreferences sharedPrefs;
+    private SharedPreferences.Editor prefEditor;
+    private Boolean isSubscribed;
+    private int subscriberID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +98,8 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
             public void onChanged(MarkerOptions markerOptions) {
                 Log.d(TAG, "LiveData being observed. Setting new Marker on the map: " + markerOptions.getTitle());
                 if (mMap != null){
-                    mMap.addMarker(markerOptions);
+                    Marker changedMarker = mMap.addMarker(markerOptions);
+                    changedMarker.setTag(markerOptions.getTitle());
                 }
             }
         });
@@ -250,13 +258,15 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
     @Override
     public void onInfoWindowClick(Marker marker) {
         mClickedMarker = marker;
-        displayBottomSheet();
-
+        //do not enable bottomsheet for user's location Marker
+        if (!marker.getTitle().equals(getString(R.string.distribution_map_marker_text))){
+            displayBottomSheet();
+        }
     }
 
-    //Create bottomSheet for mapMarker click
+    //Create bottomSheet associated with clicked mapMarker
     public void displayBottomSheet() {
-        BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetDialogFragment(mClickedMarker.getTitle(), mClickedMarker.getSnippet());
+        BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetDialogFragment(mClickedMarker.getTitle(), mClickedMarker.getSnippet(), mClickedMarker.getTag().toString());
         bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 
@@ -279,6 +289,7 @@ public class FindDistributionActivity extends AppCompatActivity implements OnMap
     };
 
 
+    //implement BottomSheetListener interface callback to display the response Toast
     @Override
     public void onSwitchSelected(String text) {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();

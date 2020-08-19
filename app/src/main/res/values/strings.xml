@@ -51,8 +51,18 @@
 
     //BottomSheet
     <string name="bottom_sheet_subscribe_label">Subscribe for updates</string>
+    <string name="bottom_sheet_subscribed_toast_text">Subscribed to </string>
+    <string name="bottom_sheet_unsubscribed_toast_text">Unsubscribed from </string>
+
+
+    //PreferenceScreen
+    <string name="preferences_category_subscribed_title_text">Subscribed Distributions</string>
+    <string name="preferences_category_subscribed_key">distributor_categories</string>
+
 
     //DataBindingAdapter
     <string name="validation_error_empty">Field cannot be empty</string>
+    <string name="appwidget_no_text">Subscribe in app to view distributions</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>
