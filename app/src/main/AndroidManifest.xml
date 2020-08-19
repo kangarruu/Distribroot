@@ -27,7 +27,7 @@
             android:value="@string/maps_api_key" />
 
         <activity android:name=".ui.MainActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.ActionBar.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
