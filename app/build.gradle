@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            storeFile file('$rootDir/keystore.jks')
+            storeFile file('keystore.jks')
             storePassword 'finalUdacityProj'
             keyAlias 'distribroot'
             keyPassword 'UdacityFinalProj'
